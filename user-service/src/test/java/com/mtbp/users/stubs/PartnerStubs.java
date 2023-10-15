@@ -18,6 +18,7 @@ public class PartnerStubs {
 
     public PartnerDto createPartnerDtoStub(AddPartnerRequest addPartnerRequestStub) {
         return PartnerDto.builder()
+            .id(DocKeyUtils.createPartnerDocKey())
             .email(addPartnerRequestStub.getEmail())
             .firstName(addPartnerRequestStub.getLastName())
             .lastName(addPartnerRequestStub.getLastName())
@@ -34,5 +35,4 @@ public class PartnerStubs {
             .phoneNumber("9185646798")
             .build();
     }
-
 }

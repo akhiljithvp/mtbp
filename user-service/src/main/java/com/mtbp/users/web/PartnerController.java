@@ -19,9 +19,9 @@ public class PartnerController {
 
     @PostMapping
     public ResponseEntity<PartnerDto> addPartner(@RequestBody AddPartnerRequest addPartnerRequest) {
-        PartnerDto customer = partnerService.addPartner(addPartnerRequest);
-        URI location = UriHelperUtils.createUriFrom(PartnerController.class, "partners", customer.getId());
-        return ResponseEntity.created(location).body(customer);
+        PartnerDto partner = partnerService.addPartner(addPartnerRequest);
+        URI location = UriHelperUtils.createUriFrom(PartnerController.class, "partners", partner.getId());
+        return ResponseEntity.created(location).body(partner);
     }
 
     @PutMapping("/{id}")

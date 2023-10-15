@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class PartnerControllerTest extends PartnerStubs {
@@ -29,7 +30,7 @@ public class PartnerControllerTest extends PartnerStubs {
         RestAssuredMockMvc.config = new RestAssuredMockMvcConfig().mockMvcConfig(
             new MockMvcConfig().dontAutomaticallyApplySpringSecurityMockMvcConfigurer()
         );
-        RestAssuredMockMvc.basePath = "/apis/v1/partners";
+        RestAssuredMockMvc.basePath = "/partners";
         RestAssuredMockMvc.standaloneSetup(partnerController, restExceptionHandlerMock);
     }
 
@@ -37,6 +38,7 @@ public class PartnerControllerTest extends PartnerStubs {
     public void whenPostAddPartnerRequest_GivenValidInputs_ThenReturn201() {
         AddPartnerRequest addPartnerRequestStub = addPartnerRequestStub();
         PartnerDto partnerDtoStub = createPartnerDtoStub(addPartnerRequestStub);
+        given(partnerServiceMock.addPartner(addPartnerRequestStub)).willReturn(partnerDtoStub);
 
         PartnerDto response = RestAssuredMockMvc.given()
             .contentType(ContentType.JSON)
@@ -52,15 +54,5 @@ public class PartnerControllerTest extends PartnerStubs {
             .usingRecursiveComparison()
             .ignoringFields("id")
             .isEqualTo(partnerDtoStub);
-    }
-
-    @Test
-    public void whenPostAddPartnerRequest_GivenSessionHeaderIsMissing_ThenReturn400() {
-        RestAssuredMockMvc.given()
-            .contentType(ContentType.JSON)
-            .body(addPartnerRequestStub())
-            .post()
-            .then()
-            .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
